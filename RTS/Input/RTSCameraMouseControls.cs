@@ -31,10 +31,6 @@ public class RTSCameraMouseControls : MonoBehaviour {
     /// The speed at which the camera scrolls
     /// </summary>
     public float ScrollVelocity = 50f;
-
-	void Start () {
-	
-	}
 	
 	void Update () {
         var mousePos = Input.mousePosition;

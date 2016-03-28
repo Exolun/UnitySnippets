@@ -19,7 +19,7 @@ public class SelectableUnit : MonoBehaviour {
     void Start()
     {
         this.SelectionHighlighting.SetActive(false);
-    }
+    }    
 
     public bool IsSelected() {
         return this.isSelected;
@@ -33,5 +33,5 @@ public class SelectableUnit : MonoBehaviour {
     public void Deselect() {
         this.isSelected = false;
         this.SelectionHighlighting.SetActive(false);
-    }
+    }    
 }

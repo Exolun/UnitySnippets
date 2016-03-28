@@ -30,6 +30,7 @@ public class SelectionBox : MonoBehaviour {
     /// </summary>
     public string SelectableUnitTag = "Unit";
     
+    
 	void Start () {
         this.SelectionFrame.SetActive(false);
         this.selectionBoxTransform = this.SelectionFrame.GetComponent<RectTransform>();
@@ -53,10 +54,14 @@ public class SelectionBox : MonoBehaviour {
         //Drag finished, make selection
         else if (this.mouseDown && !Input.GetMouseButton(0))
         {
+            var currentPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             this.SelectionFrame.SetActive(false);
             this.mouseDown = false;
 
-            this.doSelection(this.initialMouseDownPosition, new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+            if(Vector2.Distance(currentPos, initialMouseDownPosition) > 3)
+            {
+                this.doSelection(this.initialMouseDownPosition, currentPos);
+            }
         }
         //Update selection box during drag
         else if (Input.GetMouseButton(0) && this.mouseDown)

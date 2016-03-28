@@ -13,6 +13,7 @@ namespace Commands
     {
         private GameObject unit;
         private Vector3 target;
+        private Func<Vector3> forwardGetter;
         private float speed;        
 
         /// <summary>
@@ -22,19 +23,18 @@ namespace Commands
         /// <param name="unit">Unit to move</param>
         /// <param name="target">Target position to move to</param>
         /// <param name="speed">Velocity in world units per second to move at</param>
-        public MoveUnitCommand(GameObject unit, Vector3 target, float speed)
+        public MoveUnitCommand(GameObject unit, Func<Vector3> forwardGetter, Vector3 target, float speed)
         {
             this.unit = unit;
             this.target = target;
             this.speed = speed;
+            this.forwardGetter = forwardGetter;
         }
 
         public void Do()
-        {
-            var direction = (this.unit.transform.position - target).normalized;      
-                  
-            var moveAmount = direction * speed * Time.deltaTime;
-            this.unit.transform.position = this.unit.transform.position - moveAmount;
+        {                  
+            var moveAmount = this.forwardGetter() * speed * Time.deltaTime;
+            this.unit.transform.position = this.unit.transform.position + moveAmount;
         }
 
         public bool IsComplete()

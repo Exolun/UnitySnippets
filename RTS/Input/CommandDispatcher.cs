@@ -114,7 +114,7 @@ public class CommandDispatcher : MonoBehaviour {
             }
             else
             {
-                commandRec.AppendCommand(new TurnAndMoveCommand(gameObj, target + positionDelta, gameObj.transform.forward, config));
+                commandRec.SetCommand(new TurnAndMoveCommand(gameObj, target + positionDelta, gameObj.transform.forward, config));
             }
         }
 

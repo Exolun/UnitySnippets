@@ -25,11 +25,11 @@ namespace Commands
 
         public string ForwardDirection = "left";
 
-        void Start()
-        {
-
-        }
-
+        /// <summary>
+        /// Approximate size of the unit
+        /// </summary>
+        public float UnitRadius = 45;
+        
         public Vector3 GetForward()
         {
             if(ForwardDirection.ToLower() == "left")

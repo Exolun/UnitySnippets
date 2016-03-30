@@ -32,9 +32,9 @@ public class CommandDispatcher : MonoBehaviour {
             this.issueRightClickCommand(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonUp(0))
         {
-            this.issueRightClickCommand(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+            this.cursor.SetDefault();
         }
 
         if (Input.GetKeyUp(KeyCode.S))
@@ -110,13 +110,11 @@ public class CommandDispatcher : MonoBehaviour {
 
             if (appendCommand)
             {
-                commandRec.AppendCommand(new TurnAndMoveCommand(gameObj, config.GetForward, 
-                                        target + positionDelta, gameObj.transform.forward, config.TurningSpeed, config.MovementSpeed));
+                commandRec.AppendCommand(new TurnAndMoveCommand(gameObj, target + positionDelta, gameObj.transform.forward, config));
             }
             else
             {
-                commandRec.SetCommand(new TurnAndMoveCommand(gameObj, config.GetForward,
-                                        target + positionDelta, gameObj.transform.forward, config.TurningSpeed, config.MovementSpeed));
+                commandRec.AppendCommand(new TurnAndMoveCommand(gameObj, target + positionDelta, gameObj.transform.forward, config));
             }
         }
 

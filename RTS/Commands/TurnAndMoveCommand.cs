@@ -11,18 +11,10 @@ namespace Commands
         private RotateUnitCommand rotCommand;
         private MoveUnitCommand moveCommand;
 
-        public TurnAndMoveCommand(GameObject unit, Func<Vector3> forwardGetter, Vector3 target, Vector3 rotationAxis, float degreesPerSecond, float moveSpeed)
+        public TurnAndMoveCommand(GameObject unit, Vector3 target, Vector3 rotationAxis, UnitCommandConfig config)
         {
-            this.rotCommand = new RotateUnitCommand(unit, forwardGetter, () => {
-                if(Vector3.Distance(unit.transform.position, target) > 3)
-                {
-                    return (target - unit.transform.position).normalized;
-                }
-
-                return forwardGetter();
-
-            }, rotationAxis, degreesPerSecond);
-            this.moveCommand = new MoveUnitCommand(unit, forwardGetter, target, moveSpeed);
+            this.rotCommand = new RotateUnitCommand(unit, config.GetForward, () => { return (target - unit.transform.position).normalized; }, rotationAxis, config.TurningSpeed);
+            this.moveCommand = new MoveUnitCommand(unit, config.GetForward, target, config.MovementSpeed, config.UnitRadius);
         }
 
         public void Do()

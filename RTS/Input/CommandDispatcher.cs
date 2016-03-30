@@ -11,12 +11,28 @@ public class CommandDispatcher : MonoBehaviour {
     public string SelectableUnitTag = "Unit";
 
     /// <summary>
-    /// Marker to use when a movement is being made
+    /// Marker to use when a normal movement is being made
     /// </summary>
-    public GameObject MovementMarker;    
-	
+    public GameObject MovementMarker;
+
+    /// <summary>
+    /// Marker to use when an attack move is being made
+    /// </summary>
+    public GameObject AttackMoveMarker;
+    
+    private CustomCursor cursor;
+
+    void Start() {
+        this.cursor = GameObject.Find("Cursor").GetComponent<CustomCursor>() as CustomCursor;
+    }
+
 	void Update () {
         if (Input.GetMouseButtonUp(1))
+        {
+            this.issueRightClickCommand(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+        }
+
+        if (Input.GetMouseButtonDown(0))
         {
             this.issueRightClickCommand(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
         }
@@ -25,7 +41,12 @@ public class CommandDispatcher : MonoBehaviour {
         {
             this.issueStopCommand();
         }
-	}
+
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            this.cursor.SetAttack();
+        }
+    }    
 
     private void issueStopCommand()
     {
@@ -51,6 +72,8 @@ public class CommandDispatcher : MonoBehaviour {
             target.z = 0;
             issueMoveCommand(selectedCommandableUnits, target, appendCommand);
         }
+
+        this.cursor.SetDefault();
     }
 
     private Dictionary<GameObject, CommandReceiver> getSelectedCommandableUnits()
@@ -114,6 +137,14 @@ public class CommandDispatcher : MonoBehaviour {
 
     private void showMovementMarker(Vector3 target)
     {
-        Instantiate(this.MovementMarker, target, new Quaternion());
+        if (this.cursor.GetStyle() == CustomCursor.CursorStyle.Attack)
+        {
+            Instantiate(this.AttackMoveMarker, target, new Quaternion());
+        }
+        else
+        {
+            Instantiate(this.MovementMarker, target, new Quaternion());
+        }
+
     }
 }

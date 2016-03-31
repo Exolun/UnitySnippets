@@ -16,13 +16,15 @@ namespace Commands
         private readonly Vector3 rotationAxis;
         private GameObject unit;
 
-        public RotateUnitCommand(GameObject unit, Func<Vector3> forwardGetter, Func<Vector3> desiredForwardGetter, Vector3 rotationAxis, float degreesPerSecond)
+        public RotateUnitCommand(GameObject unit, Func<Vector3> desiredForwardGetter)
         {
+            var config = unit.GetComponent<UnitCommandConfig>() as UnitCommandConfig;
+
             this.unit = unit;
-            this.forwardGetter = forwardGetter;
+            this.forwardGetter = config.GetForward;
             this.desiredForwardGetter = desiredForwardGetter;
-            this.degreesPerSecond = degreesPerSecond;
-            this.rotationAxis = rotationAxis;
+            this.degreesPerSecond = config.TurningSpeed;
+            this.rotationAxis = config.GetRotationAxis();
         }
 
         public void Do()

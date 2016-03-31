@@ -110,11 +110,11 @@ public class CommandDispatcher : MonoBehaviour {
 
             if (appendCommand)
             {
-                commandRec.AppendCommand(new TurnAndMoveCommand(gameObj, target + positionDelta, gameObj.transform.forward, config));
+                commandRec.AppendCommand(new TurnAndMoveCommand(gameObj, target + positionDelta));
             }
             else
             {
-                commandRec.SetCommand(new TurnAndMoveCommand(gameObj, target + positionDelta, gameObj.transform.forward, config));
+                commandRec.SetCommand(new TurnAndMoveCommand(gameObj, target + positionDelta));
             }
         }
 

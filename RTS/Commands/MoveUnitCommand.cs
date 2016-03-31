@@ -24,13 +24,15 @@ namespace Commands
         /// <param name="unit">Unit to move</param>
         /// <param name="target">Target position to move to</param>
         /// <param name="speed">Velocity in world units per second to move at</param>
-        public MoveUnitCommand(GameObject unit, Func<Vector3> forwardGetter, Vector3 target, float speed, float radius)
+        public MoveUnitCommand(GameObject unit, Vector3 target)
         {
+            var config = unit.GetComponent<UnitCommandConfig>() as UnitCommandConfig;
+
             this.unit = unit;
             this.target = target;
-            this.speed = speed;
-            this.forwardGetter = forwardGetter;
-            this.radius = radius;
+            this.speed = config.MovementSpeed;
+            this.forwardGetter = config.GetForward;
+            this.radius = config.UnitRadius;
         }
 
         public void Do()

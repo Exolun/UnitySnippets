@@ -29,6 +29,10 @@ namespace Commands
         /// Approximate size of the unit
         /// </summary>
         public float UnitRadius = 45;
+
+        public Vector3 GetRotationAxis() {
+            return this.gameObject.transform.forward;
+        }
         
         public Vector3 GetForward()
         {

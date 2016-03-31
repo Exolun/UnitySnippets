@@ -23,42 +23,62 @@ namespace Commands
         /// </summary>
         public float TurretTurningSpeed = 270;
 
+        /// <summary>
+        /// The relative axis to consider the 'forward' direction for the unit (for movement purposes)
+        /// </summary>
         public string ForwardDirection = "left";
+
+        /// <summary>
+        /// The relative direction for rotating the unit to face something
+        /// </summary>
+        public string RotationAxis = "forward";
 
         /// <summary>
         /// Approximate size of the unit
         /// </summary>
         public float UnitRadius = 45;
 
+        /// <summary>
+        /// Disposition of the unit (determines behavior)
+        /// </summary>
+        public UnitDisposition Disposition = UnitDisposition.Defensive;
+
         public Vector3 GetRotationAxis() {
-            return this.gameObject.transform.forward;
+            return this.getRelativeDirectionFromString(this.RotationAxis);
         }
         
         public Vector3 GetForward()
         {
-            if(ForwardDirection.ToLower() == "left")
+            return this.getRelativeDirectionFromString(this.ForwardDirection);
+        }
+
+        private Vector3 getRelativeDirectionFromString(string direction)
+        {
+            string dirLower = direction.ToLower();
+
+            if (dirLower == "left")
             {
                 return -this.gameObject.transform.right;
             }
-            else if (ForwardDirection.ToLower() == "right")
+            else if (dirLower == "right")
             {
-                return this.transform.right;
+                return this.gameObject.transform.right;
             }
-            else if (ForwardDirection.ToLower() == "up")
+            else if (dirLower == "up")
             {
-                return this.transform.up;
+                return this.gameObject.transform.up;
             }
-            else if (ForwardDirection.ToLower() == "down")
+            else if (dirLower == "down")
             {
-                return -this.transform.up;
+                return -this.gameObject.transform.up;
             }
-            else if (ForwardDirection.ToLower() == "forward")
+            else if (dirLower == "forward")
             {
-                return this.transform.forward;
+                return this.gameObject.transform.forward;
             }
             else
             {
-                return -this.transform.forward;
+                return -this.gameObject.transform.forward;
             }
         }
     }

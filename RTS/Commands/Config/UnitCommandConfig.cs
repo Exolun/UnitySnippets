@@ -19,11 +19,6 @@ namespace Commands
         public float MovementSpeed = 100;
 
         /// <summary>
-        /// Degrees per second this unit's turret can turn
-        /// </summary>
-        public float TurretTurningSpeed = 270;
-
-        /// <summary>
         /// The relative axis to consider the 'forward' direction for the unit (for movement purposes)
         /// </summary>
         public string ForwardDirection = "left";
@@ -41,7 +36,7 @@ namespace Commands
         /// <summary>
         /// Disposition of the unit (determines behavior)
         /// </summary>
-        public UnitDisposition Disposition = UnitDisposition.Defensive;
+        public UnitDisposition Disposition = UnitDisposition.Defensive;        
 
         public Vector3 GetRotationAxis() {
             return this.getRelativeDirectionFromString(this.RotationAxis);

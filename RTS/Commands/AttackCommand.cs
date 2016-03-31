@@ -12,7 +12,7 @@ namespace Commands
         private Func<Vector3> attackTargetGetter;
         private RotateTurretCommand rotTurretCmd;
 
-        public AttackCommand(GameObject unit, Func<Vector3> attackTargetGetter)
+        public AttackCommand(GameObject unit, Func<Vector3> attackTargetGetter, bool attackGround)
         {
             this.unit = unit;
             this.attackTargetGetter = attackTargetGetter;
@@ -22,12 +22,18 @@ namespace Commands
 
         public void Do()
         {
-            throw new NotImplementedException();
+            rotTurretCmd.Do();
+
+            ///Turret is aimed, ready to fire
+            if(rotTurretCmd.IsComplete())
+            {
+
+            }
         }
 
         public bool IsComplete()
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

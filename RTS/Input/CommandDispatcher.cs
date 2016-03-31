@@ -70,10 +70,41 @@ public class CommandDispatcher : MonoBehaviour {
         {
             var target = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
             target.z = 0;
-            issueMoveCommand(selectedCommandableUnits, target, appendCommand);
+
+            if(this.cursor.GetStyle() == CustomCursor.CursorStyle.Attack)
+            {
+                issueAttackCommand(selectedCommandableUnits, target, appendCommand);
+            }
+            else
+            {
+                issueMoveCommand(selectedCommandableUnits, target, appendCommand);
+            }
+
         }
 
         this.cursor.SetDefault();
+    }
+
+    private void issueAttackCommand(Dictionary<GameObject, CommandReceiver> selectedCommandableUnits, Vector3 target, bool appendCommand)
+    {
+        //TODO: Determine if target falls on an enemy unit
+        //if so, return the unit's position instead of a target
+
+        foreach (var objCommandPair in selectedCommandableUnits)
+        {
+            var gameObj = objCommandPair.Key;
+            var commandRec = objCommandPair.Value;
+
+            if (appendCommand)
+            {
+                commandRec.AppendCommand(new AttackCommand(gameObj, () => { return target; }, true));
+            }
+            else
+            {
+                commandRec.SetCommand(new AttackCommand(gameObj, () => { return target; }, true));
+            }
+        }
+
     }
 
     private Dictionary<GameObject, CommandReceiver> getSelectedCommandableUnits()
@@ -105,8 +136,7 @@ public class CommandDispatcher : MonoBehaviour {
         {
             var gameObj = objCommandPair.Key;
             var commandRec = objCommandPair.Value;
-            var positionDelta = gameObj.transform.position - avgPos;
-            var config = gameObj.GetComponent<UnitCommandConfig>() as UnitCommandConfig;
+            var positionDelta = gameObj.transform.position - avgPos;            
 
             if (appendCommand)
             {

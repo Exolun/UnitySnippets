@@ -10,12 +10,14 @@ namespace Commands
     {
         private GameObject unit;
         private Func<Vector3> attackTargetGetter;
+        private UnitAttackConfig attackConfig;
         private RotateTurretCommand rotTurretCmd;
 
         public AttackCommand(GameObject unit, Func<Vector3> attackTargetGetter, bool attackGround)
         {
             this.unit = unit;
             this.attackTargetGetter = attackTargetGetter;
+            this.attackConfig = unit.GetComponent<UnitAttackConfig>();
 
             this.rotTurretCmd = new RotateTurretCommand(unit, attackTargetGetter);
         }
@@ -27,7 +29,7 @@ namespace Commands
             ///Turret is aimed, ready to fire
             if(rotTurretCmd.IsComplete())
             {
-
+                attackConfig.FireIfReady();
             }
         }
 

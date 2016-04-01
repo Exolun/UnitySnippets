@@ -29,30 +29,22 @@ namespace Commands
 
         public void Do()
         {
-            Vector3 target = this.attackTargetGetter();
+            var dir = -(this.turret.transform.position - this.attackTargetGetter()).normalized;
+            float angle = Vector3.Angle((-this.turret.transform.right), dir);
+            float signedAngle = (-this.turret.transform.right).SignedAngleBetween(dir, this.rotationAxis);
 
-            float angle = target.SignedAngleBetween((-this.turret.transform.right), this.rotationAxis);
-            if (Math.Abs(angle) < 1)
-                return;
-
-            float turningAmount = Time.deltaTime * this.attackConfig.TurretTurningSpeed;
-            if (Math.Abs(turningAmount) > Math.Abs(angle))
-            {
-                turningAmount = angle;
-            }
-            else
-            {
-                if (angle < 0)
-                    turningAmount = -turningAmount;
-            }            
+            float turningAmount = Mathf.Clamp(Time.deltaTime * this.attackConfig.TurretTurningSpeed, 0, angle);
+                        
 
             this.turret.transform.Rotate(this.rotationAxis, turningAmount);
         }
 
         public bool IsComplete()
         {
-            float angle = Vector3.Angle(this.attackTargetGetter(), (-this.turret.transform.right));
-            return Math.Round(angle) < 1;
+            var dir = -(this.turret.transform.position - this.attackTargetGetter()).normalized;
+            float angle = Vector3.Angle((-this.turret.transform.right), dir);
+
+            return Math.Abs(angle) < .5;
         }
     }
 }

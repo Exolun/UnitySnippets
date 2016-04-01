@@ -36,7 +36,7 @@ namespace Commands
             float angle = forward.SignedAngleBetween(desiredForward, this.rotationAxis);
             float turningAmount = Time.deltaTime * degreesPerSecond;
 
-            if (angle < 0)
+            if (angle < 1)
                 turningAmount = -turningAmount;
 
             if (Math.Abs(turningAmount) > Math.Abs(angle))

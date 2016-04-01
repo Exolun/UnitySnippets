@@ -37,7 +37,7 @@ namespace Commands
         /// Disposition of the unit (determines behavior)
         /// </summary>
         public UnitDisposition Disposition = UnitDisposition.Defensive;        
-
+        
         public Vector3 GetRotationAxis() {
             return this.getRelativeDirectionFromString(this.RotationAxis);
         }

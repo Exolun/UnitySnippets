@@ -97,10 +97,12 @@ public class CommandDispatcher : MonoBehaviour {
 
             if (appendCommand)
             {
+                this.showMovementMarker(target);
                 commandRec.AppendCommand(new AttackCommand(gameObj, () => { return target; }, true));
             }
             else
             {
+                this.showMovementMarker(target);
                 commandRec.SetCommand(new AttackCommand(gameObj, () => { return target; }, true));
             }
         }

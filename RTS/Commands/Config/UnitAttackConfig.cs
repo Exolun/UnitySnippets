@@ -34,6 +34,11 @@ namespace Commands
         public float AttackDelay = 500;
 
         /// <summary>
+        /// Units per second that projectiles fired move at
+        /// </summary>
+        public float ProjectileVelocity = 200;
+
+        /// <summary>
         /// Degrees per second this unit's turret can turn
         /// </summary>
         public float TurretTurningSpeed = 90;

@@ -48,7 +48,7 @@ public class ProjectileController : MonoBehaviour
         }
         else
         {
-            this.gameObject.transform.Translate(this.Direction * Time.deltaTime * Velocity);
+            this.gameObject.transform.position = this.gameObject.transform.position + (this.Direction * Time.deltaTime * Velocity);
         }
     }
 

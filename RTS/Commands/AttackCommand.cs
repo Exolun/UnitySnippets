@@ -29,7 +29,7 @@ namespace Commands
             ///Turret is aimed, ready to fire
             if(rotTurretCmd.IsComplete())
             {
-                attackConfig.FireIfReady();
+                attackConfig.FireIfReady(this.rotTurretCmd.AttackDirection());
             }
         }
 

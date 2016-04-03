@@ -15,6 +15,7 @@ namespace Commands
         private UnitCommandConfig config;
         private UnitAttackConfig attackConfig;
         private Vector3 rotationAxis;
+        private float negation = 1.0f;
 
         public RotateTurretCommand(GameObject unit, Func<Vector3> attackTargetGetter)
         {
@@ -25,18 +26,39 @@ namespace Commands
             this.attackTargetGetter = attackTargetGetter;
             this.turret = unit.transform.FindChild("Turret").gameObject;
             this.rotationAxis = this.config.GetRotationAxis();
+
+            this.setNegation();
         }
+
+        private void setNegation()
+        {
+            var dir = -(this.turret.transform.position - this.attackTargetGetter()).normalized;
+            float angle = Vector3.Angle((-this.turret.transform.right), dir);
+            float turningAmount = Mathf.Clamp(Time.deltaTime * this.attackConfig.TurretTurningSpeed, 0, angle);
+
+            this.turret.transform.Rotate(this.rotationAxis, turningAmount);
+            float newAngle = Vector3.Angle((-this.turret.transform.right), dir);
+
+            if(newAngle > angle)
+            {
+                this.negation = -1.0f;
+            }
+
+            this.turret.transform.Rotate(this.rotationAxis, -turningAmount);
+        }
+
+        public Vector3 AttackDirection()
+        {
+            return -(this.turret.transform.position - this.attackTargetGetter()).normalized;
+        }
+        
 
         public void Do()
         {
             var dir = -(this.turret.transform.position - this.attackTargetGetter()).normalized;
             float angle = Vector3.Angle((-this.turret.transform.right), dir);
-            float signedAngle = (-this.turret.transform.right).SignedAngleBetween(dir, this.rotationAxis);
-
             float turningAmount = Mathf.Clamp(Time.deltaTime * this.attackConfig.TurretTurningSpeed, 0, angle);
-                        
-
-            this.turret.transform.Rotate(this.rotationAxis, turningAmount);
+            this.turret.transform.Rotate(this.rotationAxis, turningAmount * negation);
         }
 
         public bool IsComplete()

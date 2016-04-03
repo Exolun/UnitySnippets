@@ -19,9 +19,9 @@ namespace Commands
         public GameObject TurretBone;
 
         /// <summary>
-        /// Game object hosting the particle system for the explosion caused by projectile impacts for this unit
+        /// Projectile to use when firing
         /// </summary>
-        public GameObject ImpactExplosion;
+        public GameObject Projectile;
 
         /// <summary>
         /// Determines firing distance for the unit
@@ -31,12 +31,12 @@ namespace Commands
         /// <summary>
         /// Delay in milliseconds between attacks for unit
         /// </summary>
-        public float AttackDelay = 500;
+        public float AttackDelay = 1000;
 
         /// <summary>
         /// Units per second that projectiles fired move at
         /// </summary>
-        public float ProjectileVelocity = 200;
+        public float ProjectileVelocity = 500;
 
         /// <summary>
         /// Degrees per second this unit's turret can turn
@@ -50,19 +50,29 @@ namespace Commands
 
         DateTime? lastFireTime = null;
 
-        public void FireIfReady()
+        public void FireIfReady(Vector3 direction)
         {
             if(lastFireTime == null || DateTime.Now - ((DateTime)lastFireTime) > TimeSpan.FromMilliseconds(AttackDelay))
             {
-                this.fire();
+                this.fire(direction);
                 this.lastFireTime = DateTime.Now;
             }
         }
 
-        private void fire()
+        private void fire(Vector3 direction)
         {
             var flare = Instantiate(this.TurretFlare, this.TurretBone.transform.position, this.TurretBone.transform.rotation);
             Destroy(flare, this.AttackDelay / 1000);
+
+            var shot = Instantiate(this.Projectile);
+            var shotObj = ((GameObject)shot);
+            shotObj.transform.position = this.TurretBone.transform.position;
+            shotObj.transform.rotation = Quaternion.FromToRotation(-Vector3.back, direction);
+
+            var projController = (shotObj).GetComponent<ProjectileController>();
+            projController.Direction = direction;
+            projController.Velocity = this.ProjectileVelocity;
+            projController.Lifetime = 1.0f;
         }
     }
 }

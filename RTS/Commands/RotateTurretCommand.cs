@@ -64,9 +64,8 @@ namespace Commands
         public bool IsComplete()
         {
             var dir = -(this.turret.transform.position - this.attackTargetGetter()).normalized;
-            float angle = Vector3.Angle((-this.turret.transform.right), dir);
-
-            return Math.Abs(angle) < .5;
+            float angle = Vector3.Angle((-this.turret.transform.right), dir);            
+            return Math.Abs(angle) < 1;
         }
     }
 }

@@ -56,8 +56,11 @@ public class ProjectileController : MonoBehaviour
     {
         if (other.gameObject.CompareTag(this.EnemyTag))
         {
-            Instantiate(this.Explosion);
-            Destroy(this.gameObject);
+            var exp = Instantiate(this.Explosion);
+            exp.transform.position = other.ClosestPointOnBounds(this.gameObject.transform.position);
+            
+            Destroy(exp, .5f);
+            Destroy(this.gameObject);            
         }        
     }
 }

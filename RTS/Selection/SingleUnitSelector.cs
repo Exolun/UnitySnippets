@@ -21,7 +21,7 @@ public class SingleUnitSelector : MonoBehaviour {
                 allSelectables.Add(selectable);
                 if(selectable != null)
                 {
-                    var collider = unit.GetComponent<BoxCollider2D>();
+                    var collider = unit.GetComponent<SphereCollider>();
                     if (collider != null)
                     {
                         var target = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));

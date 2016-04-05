@@ -29,6 +29,11 @@ public class ProjectileController : MonoBehaviour
     /// </summary>
     public float Lifetime;
 
+    /// <summary>
+    /// Damage the projectile will inflict when it impacts a target
+    /// </summary>
+    public float Damage;
+
     private SphereCollider spCollider;
     private DateTime startTime;
     private TimeSpan timeToLive;
@@ -58,7 +63,8 @@ public class ProjectileController : MonoBehaviour
         {
             var exp = Instantiate(this.Explosion);
             exp.transform.position = other.ClosestPointOnBounds(this.gameObject.transform.position);
-            
+            other.gameObject.SendMessage("InflictDamage", this.Damage);
+
             Destroy(exp, .5f);
             Destroy(this.gameObject);            
         }        

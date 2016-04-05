@@ -31,7 +31,7 @@ namespace Commands
         /// <summary>
         /// Approximate size of the unit
         /// </summary>
-        public float UnitRadius = 45;
+        public float UnitRadius = 45;        
 
         /// <summary>
         /// Disposition of the unit (determines behavior)

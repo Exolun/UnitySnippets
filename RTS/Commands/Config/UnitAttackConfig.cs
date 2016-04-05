@@ -34,6 +34,11 @@ namespace Commands
         public float AttackDelay = 1000;
 
         /// <summary>
+        /// Damage the 
+        /// </summary>
+        public float AttackDamage = 150;
+
+        /// <summary>
         /// Units per second that projectiles fired move at
         /// </summary>
         public float ProjectileVelocity = 500;
@@ -73,6 +78,7 @@ namespace Commands
             projController.Direction = direction;
             projController.Velocity = this.ProjectileVelocity;
             projController.Lifetime = 1.0f;
+            projController.Damage = this.AttackDamage;
         }
     }
 }

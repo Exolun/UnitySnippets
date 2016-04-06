@@ -31,7 +31,19 @@ public class RTSCameraMouseControls : MonoBehaviour {
     /// The speed at which the camera scrolls
     /// </summary>
     public float ScrollVelocity = 50f;
-	
+
+    /// <summary>
+    /// Top left of the map, defining the bounds of Min X and Max Y
+    /// for camera panning.
+    /// </summary>
+    public Vector2 TopLeft = new Vector2(-5000, 5000);
+
+    /// <summary>
+    /// Bottom right of the map, defining the bounds of Max X and Min Y
+    /// for camera panning.
+    /// </summary>
+    public Vector2 BottomRight = new Vector2(5000, -5000);
+
 	void Update () {
         var mousePos = Input.mousePosition;
         var position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y, this.gameObject.transform.position.z);
@@ -59,6 +71,10 @@ public class RTSCameraMouseControls : MonoBehaviour {
         //Update camera zoom
         position.z += Input.mouseScrollDelta.y * this.ScrollVelocity * Time.deltaTime;
         position.z  = Mathf.Clamp(position.z, this.MaxZoom, this.MinZoom);
+
+        //Clamp X/Y positions to map bounds
+        position.x = Mathf.Clamp(position.x, this.TopLeft.x, this.BottomRight.x);
+        position.y = Mathf.Clamp(position.y, this.BottomRight.y, this.TopLeft.y);
 
         this.gameObject.transform.position = position;
     }

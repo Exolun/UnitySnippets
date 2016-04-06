@@ -13,6 +13,18 @@ public class CameraRectInitializer : MonoBehaviour {
     private float screenWidth = Screen.width;
     private float screenHeight = Screen.height;
 
+    /// <summary>
+    /// Multiplier to use on the screen width to set the width of the minimap's
+    /// camera rectangle
+    /// </summary>
+    public float WidthMultiplier = 2.0f;
+
+    /// <summary>
+    /// Multiplier to use on the screen height to set the height of the minimap's
+    /// camera rectangle
+    /// </summary>
+    public float HeightMultiplier = 2.0f;
+
     void Start () {
         this.updateScale();
         var renderer = this.gameObject.GetComponent<SpriteRenderer>();
@@ -31,7 +43,7 @@ public class CameraRectInitializer : MonoBehaviour {
 
     private void updateScale()
     {
-        var scale = new Vector3(Screen.width*.01f, Screen.height*.01f, 0);
+        var scale = new Vector3(Screen.width*this.WidthMultiplier, Screen.height*this.HeightMultiplier, 0);
         this.gameObject.transform.localScale = scale;
     }
 }

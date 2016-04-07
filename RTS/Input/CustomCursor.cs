@@ -29,27 +29,50 @@ public class CustomCursor : MonoBehaviour
     /// </summary>
     public Vector2 Hotspot;
 
+    /// <summary>
+    /// Tag used to determine if the cursor is hovering over an enemy
+    /// </summary>
+    public string EnemyTag = "Enemy";
+
+    private CursorHoverHightlighter highlighter = new CursorHoverHightlighter();
+    private bool attackModeSetByUser = false;
+
+    public bool AttackModeWasSetByUser()
+    {
+        return this.attackModeSetByUser;
+    }
+
     void Start()
     {
         Cursor.SetCursor(this.DefaultTexture, this.Hotspot, CursorMode.ForceSoftware);
         Cursor.visible = true;
     }
+    
+    void Update()
+    {
+        if(this.highlighter != null)
+        {
+            this.highlighter.Update(this);
+        }
+    }   
 
-    public void SetAttack()
+    public void SetAttack(bool setByUser = true)
     {
         if (this.currentStyle != CursorStyle.Attack)
         {
             Cursor.SetCursor(this.AttackTexture, this.Hotspot, CursorMode.ForceSoftware);
             this.currentStyle = CursorStyle.Attack;
+            this.attackModeSetByUser = setByUser;
         }
     }
 
-    public void SetDefault()
+    public void SetDefault(bool setByUser = true)
     {
         if (this.currentStyle != CursorStyle.Default)
         {
             Cursor.SetCursor(this.DefaultTexture, this.Hotspot, CursorMode.ForceSoftware);
             this.currentStyle = CursorStyle.Default;
+            this.attackModeSetByUser = setByUser;
         }
     }
 

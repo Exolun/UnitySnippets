@@ -27,7 +27,7 @@ public class SelectableUnit : MonoBehaviour {
 
     public void Select() {
         this.isSelected = true;
-        this.SelectionHighlighting.SetActive(true);
+        this.SelectionHighlighting.SetActive(true);        
     }
 
     public void Deselect() {

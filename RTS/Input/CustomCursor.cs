@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Selection;
 
 /// <summary>
 /// Provides a custom game cursor
@@ -50,7 +51,7 @@ public class CustomCursor : MonoBehaviour
     
     void Update()
     {
-        if(this.highlighter != null)
+        if(this.highlighter != null && CurrentSelection.GetInstance().SelectedUnits.Count > 0)
         {
             this.highlighter.Update(this);
         }

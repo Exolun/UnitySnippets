@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using Selection;
 
 /// <summary>
 /// A selection area for multi-unit selection
@@ -93,10 +94,12 @@ public class SelectionBox : MonoBehaviour {
                 {
                     selectableObj.Select();
                     selectedUnits.Add(unit);
+                    CurrentSelection.GetInstance().Add(selectableObj);
                 }
                 else
                 {
                     selectableObj.Deselect();
+                    CurrentSelection.GetInstance().Remove(selectableObj);
                 }
             }
         }

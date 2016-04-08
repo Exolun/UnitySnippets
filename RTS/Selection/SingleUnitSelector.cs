@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Selection;
 
 public class SingleUnitSelector : MonoBehaviour {
     /// <summary>
@@ -30,6 +31,7 @@ public class SingleUnitSelector : MonoBehaviour {
                         {
                             selectable.Select();
                             hit = selectable;
+                            CurrentSelection.GetInstance().Add(selectable);
                         }
                     }
                 }
@@ -40,6 +42,7 @@ public class SingleUnitSelector : MonoBehaviour {
             {
                 if (selectable != hit)
                     selectable.Deselect();
+                    CurrentSelection.GetInstance().Remove(selectable);
             }
             
         }

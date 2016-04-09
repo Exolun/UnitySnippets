@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using Commands;
 using System.Collections.Generic;
+using Selection;
 
 public class CommandDispatcher : MonoBehaviour {
     /// <summary>
@@ -111,18 +112,17 @@ public class CommandDispatcher : MonoBehaviour {
 
     private Dictionary<GameObject, CommandReceiver> getSelectedCommandableUnits()
     {
-        var units = GameObject.FindGameObjectsWithTag(this.SelectableUnitTag);
         Dictionary<GameObject, CommandReceiver> selectedCommandableUnits = new Dictionary<GameObject, CommandReceiver>();
 
-        foreach (var unit in units)
+        foreach (var selectedUnit in CurrentSelection.GetInstance().SelectedUnits)
         {
-            var selectionComponent = unit.GetComponent<SelectableUnit>();
+            var selectionComponent = selectedUnit.gameObject.GetComponent<SelectableUnit>();
             if (selectionComponent.IsSelected())
             {
-                var commandReceiver = unit.GetComponent<CommandReceiver>();
+                var commandReceiver = selectedUnit.GetComponent<CommandReceiver>();
                 if (commandReceiver != null)
                 {
-                    selectedCommandableUnits[unit] = commandReceiver;
+                    selectedCommandableUnits[selectedUnit.gameObject] = commandReceiver;
                 }
             }
         }

@@ -10,6 +10,7 @@ namespace Commands
     {
         private GameObject unit;
         private Func<Vector3> attackTargetGetter;
+        private Func<GameObject> targetUnitGetter;
         private UnitAttackConfig attackConfig;
         private RotateTurretCommand rotTurretCmd;
         private TurnAndMoveCommand turnMoveCmd;
@@ -18,6 +19,26 @@ namespace Commands
         {
             this.unit = unit;
             this.attackTargetGetter = attackTargetGetter;
+            this.attackConfig = unit.GetComponent<UnitAttackConfig>();
+
+            this.rotTurretCmd = new RotateTurretCommand(unit, attackTargetGetter);
+
+            this.setTurnMoveCmd();
+        }
+
+        public AttackCommand(GameObject unit, Func<GameObject> targetUnitGetter, bool attackGround)
+        {
+            this.unit = unit;
+            this.targetUnitGetter = targetUnitGetter;
+            this.attackTargetGetter = () => {
+                var targetUnit = targetUnitGetter();
+
+                if (targetUnit != null)
+                    return targetUnit.transform.position;
+                else
+                    return Vector3.zero;
+            };
+
             this.attackConfig = unit.GetComponent<UnitAttackConfig>();
 
             this.rotTurretCmd = new RotateTurretCommand(unit, attackTargetGetter);
@@ -44,6 +65,11 @@ namespace Commands
 
         public void Do()
         {
+            if(this.targetUnitGetter != null && this.targetUnitGetter() == null)
+            {
+                return;
+            }
+
             this.setTurnMoveCmd();
 
             if (this.turnMoveCmd != null)
@@ -67,7 +93,7 @@ namespace Commands
 
         public bool IsComplete()
         {
-            return false;
+            return false || (this.targetUnitGetter != null && this.targetUnitGetter() == null);
         }
     }
 }

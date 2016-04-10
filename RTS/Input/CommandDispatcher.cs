@@ -12,6 +12,11 @@ public class CommandDispatcher : MonoBehaviour {
     public string SelectableUnitTag = "Unit";
 
     /// <summary>
+    /// Tag to use for finding enemies
+    /// </summary>
+    public string EnemyTag = "Enemy";
+
+    /// <summary>
     /// Marker to use when a normal movement is being made
     /// </summary>
     public GameObject MovementMarker;
@@ -88,8 +93,7 @@ public class CommandDispatcher : MonoBehaviour {
 
     private void issueAttackCommand(Dictionary<GameObject, CommandReceiver> selectedCommandableUnits, Vector3 target, bool appendCommand)
     {
-        //TODO: Determine if target falls on an enemy unit
-        //if so, return the unit's position instead of a target
+        GameObject attackTarget = this.getAttackTarget(target);
 
         foreach (var objCommandPair in selectedCommandableUnits)
         {
@@ -99,15 +103,48 @@ public class CommandDispatcher : MonoBehaviour {
             if (appendCommand)
             {
                 this.showMovementMarker(target);
-                commandRec.AppendCommand(new AttackCommand(gameObj, () => { return target; }, true));
+
+                if(attackTarget != null)
+                {
+                    commandRec.AppendCommand(new AttackCommand(gameObj, () => { return attackTarget; }, true));
+                }
+                else
+                {
+                    commandRec.AppendCommand(new AttackCommand(gameObj, () => { return target; }, true));
+                }
             }
             else
             {
                 this.showMovementMarker(target);
-                commandRec.SetCommand(new AttackCommand(gameObj, () => { return target; }, true));
+                if (attackTarget != null)
+                {
+                    commandRec.SetCommand(new AttackCommand(gameObj, () => { return attackTarget; }, true));
+                }
+                else
+                {
+                    commandRec.SetCommand(new AttackCommand(gameObj, () => { return target; }, true));
+                }
             }
         }
 
+    }
+
+    private GameObject getAttackTarget(Vector3 target)
+    {
+        GameObject[] potentialTargets = GameObject.FindGameObjectsWithTag(this.EnemyTag);
+        foreach (var enemy in potentialTargets)
+        {
+            var collider = enemy.GetComponent<SphereCollider>();
+            if(collider != null)
+            {
+                if (collider.bounds.Contains(target))
+                {
+                    return enemy;
+                }
+            }
+        }
+
+        return null;
     }
 
     private Dictionary<GameObject, CommandReceiver> getSelectedCommandableUnits()
